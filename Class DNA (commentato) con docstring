@@ -1,0 +1,86 @@
+class CampioneDNA:
+    """Rappresenta un campione di DNA."""
+
+    def __init__(self, codice, sequenza, laboratorio,
+                 geni=None, mutazioni=None):
+        """Inizializza il campione."""
+
+        self.__codice_campione = codice
+        self.__sequenza = sequenza.upper()
+        self.laboratorio = laboratorio
+
+        if geni is None:
+            self.__geni_mappati = []
+        else:
+            self.__geni_mappati = geni
+
+        if mutazioni is None:
+            self.__mutazioni_rilevate = {}
+        else:
+            self.__mutazioni_rilevate = mutazioni
+
+    def aggiungi_gene(self, gene):
+        """Aggiunge un gene se non è già presente."""
+
+        if gene not in self.__geni_mappati:
+            self.__geni_mappati.append(gene)
+            print("Gene aggiunto.")
+        else:
+            print("Il gene è già presente.")
+
+    def registra_mutazione(self, posizione, tipo):
+        """Registra una mutazione."""
+
+        self.__mutazioni_rilevate[posizione] = tipo
+        print("Mutazione registrata.")
+
+    def calcola_percentuale_gc(self):
+        """Calcola la percentuale di G e C."""
+
+        gc = 0
+
+        for base in self.__sequenza:
+            if base == "G" or base == "C":
+                gc = gc + 1
+
+        if len(self.__sequenza) == 0:
+            return 0
+
+        percentuale = (gc / len(self.__sequenza)) * 100
+
+        return percentuale
+
+    def stampa_report(self):
+        """Stampa le informazioni del campione."""
+
+        print("\n--- REPORT ---")
+        print("Codice:", self.__codice_campione)
+        print("Laboratorio:", self.laboratorio)
+
+        if len(self.__sequenza) > 20:
+            sequenza = self.__sequenza[:20] + "..."
+        else:
+            sequenza = self.__sequenza
+
+        print("Sequenza:", sequenza)
+        print("Geni:", self.__geni_mappati)
+        print("Mutazioni:", self.__mutazioni_rilevate)
+
+        percentuale = self.calcola_percentuale_gc()
+        print("Percentuale GC:", percentuale, "%")
+
+
+campione1 = CampioneDNA(
+    "DNA-4029",
+    "atcggctagctagctagctagctagcta",
+    "LabGen-BioApp"
+)
+
+campione1.aggiungi_gene("geneA")
+campione1.aggiungi_gene("ampR")
+campione1.aggiungi_gene("lacZ")
+
+campione1.registra_mutazione(45, "sostituzione")
+campione1.registra_mutazione(120, "delezione")
+
+campione1.stampa_report()
