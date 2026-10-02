@@ -1,0 +1,99 @@
+# Classe che rappresenta un campione di DNA
+class CampioneDNA:
+
+    # Costruttore: crea il campione
+    def __init__(self, codice, sequenza, laboratorio,
+                 geni=None, mutazioni=None):
+
+        self.__codice_campione = codice
+        self.__sequenza = sequenza.upper()  # Trasforma il DNA in maiuscolo
+        self.laboratorio = laboratorio
+
+        # Se non ci sono geni, crea una lista vuota
+        if geni is None:
+            self.__geni_mappati = []
+        else:
+            self.__geni_mappati = geni
+
+        # Se non ci sono mutazioni, crea un dizionario vuoto
+        if mutazioni is None:
+            self.__mutazioni_rilevate = {}
+        else:
+            self.__mutazioni_rilevate = mutazioni
+
+    # Aggiunge un gene alla lista
+    def aggiungi_gene(self, gene):
+
+        # Aggiunge il gene solo se non è già presente
+        if gene not in self.__geni_mappati:
+            self.__geni_mappati.append(gene)
+            print("Gene aggiunto.")
+        else:
+            print("Il gene è già presente.")
+
+    # Registra una mutazione
+    def registra_mutazione(self, posizione, tipo):
+
+        # Salva posizione e tipo della mutazione
+        self.__mutazioni_rilevate[posizione] = tipo
+        print("Mutazione registrata.")
+
+    # Calcola la percentuale di G e C nel DNA
+    def calcola_percentuale_gc(self):
+
+        gc = 0
+
+        # Conta quante basi sono G o C
+        for base in self.__sequenza:
+            if base == "G" or base == "C":
+                gc = gc + 1
+
+        # Evita la divisione per zero
+        if len(self.__sequenza) == 0:
+            return 0
+
+        # Calcola la percentuale
+        percentuale = (gc / len(self.__sequenza)) * 100
+
+        return percentuale
+
+    # Stampa le informazioni del campione
+    def stampa_report(self):
+
+        print("\n--- REPORT ---")
+        print("Codice:", self.__codice_campione)
+        print("Laboratorio:", self.laboratorio)
+
+        # Mostra solo i primi 20 caratteri se la sequenza è lunga
+        if len(self.__sequenza) > 20:
+            sequenza = self.__sequenza[:20] + "..."
+        else:
+            sequenza = self.__sequenza
+
+        print("Sequenza:", sequenza)
+        print("Geni:", self.__geni_mappati)
+        print("Mutazioni:", self.__mutazioni_rilevate)
+
+        # Calcola e stampa la percentuale GC
+        percentuale = self.calcola_percentuale_gc()
+        print("Percentuale GC:", percentuale, "%")
+
+
+# Creazione del campione
+campione1 = CampioneDNA(
+    "DNA-4029",
+    "atcggctagctagctagctagctagcta",
+    "LabGen-BioApp"
+)
+
+# Aggiunta dei geni
+campione1.aggiungi_gene("geneA")
+campione1.aggiungi_gene("ampR")
+campione1.aggiungi_gene("lacZ")
+
+# Registrazione delle mutazioni
+campione1.registra_mutazione(45, "sostituzione")
+campione1.registra_mutazione(120, "delezione")
+
+# Stampa del report
+campione1.stampa_report()
